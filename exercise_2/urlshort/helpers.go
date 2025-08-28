@@ -16,14 +16,12 @@ func MapHandler(pathsToUrls map[string]string, fallback http.Handler) http.Handl
 	// Return anon function to handle the http request for when the request is performed.
 	return func(w http.ResponseWriter, r *http.Request) {
 		// no looping required since pathsToUrls is a map, simple lookup
-		dest, found := pathsToUrls[r.URL.Path]
-		if found {
-			// perform redirection to destination url with appropriate http status code
+		path := r.URL.Path
+		if dest, ok := pathsToUrls[path]; ok {
 			http.Redirect(w, r, dest, http.StatusFound)
-		} else {
-			// if not, return fallback default mux serving
-			fallback.ServeHTTP(w, r)
+			return
 		}
+		fallback.ServeHTTP(w, r)
 	}
 }
 
@@ -43,38 +41,33 @@ func MapHandler(pathsToUrls map[string]string, fallback http.Handler) http.Handl
 //
 // see maphandler to create a similar http.handlerfunc via
 // // a mapping of paths to urls.
-func YAMLHandler(yml []byte, fallback http.Handler) (http.HandlerFunc, error) {
-
-	// struct for yaml parsing
-	type urlYamlMapping struct {
-		Path string `yaml:"path"`
-		URL  string `yaml:"url"`
-	}
-
-	// yaml map slice
-	var u []urlYamlMapping
-
-	// unmarshal the myl []byte into the urlYamlMapping
-	err := yaml.Unmarshal(yml, &u)
+func YAMLHandler(yamlBytes []byte, fallback http.Handler) (http.HandlerFunc, error) {
+	pathUrls, err := parseYaml(yamlBytes)
 	if err != nil {
 		return nil, err
 	}
+	pathsToUrls := buildMap(pathUrls)
+	return MapHandler(pathsToUrls, fallback), nil
+}
 
-	// efficiently handle urlshort lookups by changing data struct into a map
+func buildMap(pathUrls []pathUrl) map[string]string {
 	pathsToUrls := make(map[string]string)
-	for _, item := range u {
-		pathsToUrls[item.Path] = item.URL
+	for _, pu := range pathUrls {
+		pathsToUrls[pu.Path] = pu.URL
 	}
+	return pathsToUrls
+}
 
-	return func(w http.ResponseWriter, r *http.Request) {
-		// no looping required since pathsToUrls is a map, simple lookup
-		dest, found := pathsToUrls[r.URL.Path]
-		if found {
-			// perform redirection to destination url with appropriate http status code
-			http.Redirect(w, r, dest, http.StatusFound)
-		} else {
-			// if not, return fallback default mux serving
-			fallback.ServeHTTP(w, r)
-		}
-	}, err
+func parseYaml(data []byte) ([]pathUrl, error) {
+	var pathUrls []pathUrl
+	err := yaml.Unmarshal(data, &pathUrls)
+	if err != nil {
+		return nil, err
+	}
+	return pathUrls, nil
+}
+
+type pathUrl struct {
+	Path string `yaml:"path"`
+	URL  string `yaml:"url"`
 }
