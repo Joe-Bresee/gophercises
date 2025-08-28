@@ -66,7 +66,7 @@ var defaultHandlerTmpl = `
             <!-- using html/template for dynamic html rendering -->
             <h1>{{ .Title }}</h1>
             {{range .Paragraphs}}
-            <p>{{.}}</p>>
+            <p>{{.}}</p>
             {{end}}
             <ul>
                 {{range .Options}}
