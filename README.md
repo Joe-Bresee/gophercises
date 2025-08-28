@@ -44,6 +44,7 @@ A collection of Go (Golang) mini-projects and exercises based on the [Gophercise
 - Logic for working with maps and slices
 - Go's `flag` package
 - error handling and debugging in Go
+- programming with html templating (I've already learned templating though through Helm Charts)
 
 (*This section will grow as I complete more exercises.*)
 
