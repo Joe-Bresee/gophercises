@@ -2,6 +2,8 @@ package urlshort
 
 import (
 	"net/http"
+
+	"gopkg.in/yaml.v3"
 )
 
 // MapHandler will return an http.HandlerFunc (which also
@@ -41,31 +43,38 @@ func MapHandler(pathsToUrls map[string]string, fallback http.Handler) http.Handl
 //
 // see maphandler to create a similar http.handlerfunc via
 // // a mapping of paths to urls.
-// func yamlhandler(yml []byte, fallback http.handler) (http.handlerfunc, error) {
+func YAMLHandler(yml []byte, fallback http.Handler) (http.HandlerFunc, error) {
 
-// 	// struct for yaml parsing
-// 	type urlyamlmapping struct {
-// 		path string `yaml:"path"`
-// 		URL  string `yaml:"url"`
-// 	}
+	// struct for yaml parsing
+	type urlYamlMapping struct {
+		Path string `yaml:"path"`
+		URL  string `yaml:"url"`
+	}
 
-// 	// yaml map slice
-// 	var u []urlYamlMapping
+	// yaml map slice
+	var u []urlYamlMapping
 
-// 	// unmarshal the myl []byte into the urlYamlMapping
-// 	err := yaml.Unmarshal([]byte(yml), &u)
-// 	if err != nil {
-// 		log.Fatalf("error: %v", err)
-// 	}
+	// unmarshal the myl []byte into the urlYamlMapping
+	err := yaml.Unmarshal(yml, &u)
+	if err != nil {
+		return nil, err
+	}
 
-// 	// efficiently handle urlshort lookups by changing data struct into a map
-// 	pathToUrl := make(map[string]string)
-// 	for _, item := range u {
-// 		pathToUrl[item.Path] = item.URL
-// 	}
+	// efficiently handle urlshort lookups by changing data struct into a map
+	pathsToUrls := make(map[string]string)
+	for _, item := range u {
+		pathsToUrls[item.Path] = item.URL
+	}
 
-// 	func http.HandlerFunc(){
-// 		// write httphandler
-// 	}
-// 	return nil, nil
-// }
+	return func(w http.ResponseWriter, r *http.Request) {
+		// no looping required since pathsToUrls is a map, simple lookup
+		dest, found := pathsToUrls[r.URL.Path]
+		if found {
+			// perform redirection to destination url with appropriate http status code
+			http.Redirect(w, r, dest, http.StatusFound)
+		} else {
+			// if not, return fallback default mux serving
+			fallback.ServeHTTP(w, r)
+		}
+	}, err
+}
