@@ -1,6 +1,6 @@
 # Gophercises by [Joe Bresee]
 
-A collection of Go (Golang) mini-projects and exercises based on the [Gophercises](https://gophercises.com/) course by Jon Calhoun. These exercises are designed to help developers build practical Go programming skills by working through real-world examples.
+A collection of Go (Golang) mini-projects and exercises based on the [Gophercises](https://gophercises.com/) course by Jon Calhoun. These exercises are designed to help developers build practical Go programming skills by working through real-world examples. Please note some code/packages is provided through this course - but for my learning, these projects are largely written by me to satisfy the requirements of the course.
 
 ---
 
