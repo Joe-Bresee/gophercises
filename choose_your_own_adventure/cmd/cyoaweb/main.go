@@ -14,7 +14,7 @@ func main() {
 	port := flag.Int("port", 3000, "port to run the webapp story")
 	file := flag.String("file", "gopher.json", "JSON file containing cyoa story")
 	flag.Parse()
-	fmt.Printf("using the story in %s", *file)
+	fmt.Printf("using the story in %s\n", *file)
 
 	f, err := os.Open(*file)
 	if err != nil {
@@ -27,6 +27,6 @@ func main() {
 	}
 
 	h := cyoa.NewHandler(story)
-	fmt.Printf("Starting server on %d", *port)
-	log.Fatal(http.ListenAndServe(fmt.Sprintf("%d", *port), h))
+	fmt.Printf("Starting server on %d\n", *port)
+	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", *port), h))
 }

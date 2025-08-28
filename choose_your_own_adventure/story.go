@@ -2,7 +2,6 @@ package cyoa
 
 import (
 	"encoding/json"
-	"fmt"
 	"io"
 	"net/http"
 	"text/template"
@@ -51,8 +50,8 @@ type Option struct {
 var tpl *template.Template
 
 func init() {
-	tpl := template.Must(template.New("").Parse(defaultHandlerTmpl))
-	fmt.Printf("%d", tpl)
+	tpl = template.Must(template.New("").Parse(defaultHandlerTmpl))
+	// fmt.Printf("%d", tpl)
 }
 
 // simple html tmplt
