@@ -1,37 +1,51 @@
-package main
+package linkparser
 
 import (
-	"fmt"
-	"log"
+	"io"
 	"strings"
 
 	"golang.org/x/net/html"
 	"golang.org/x/net/html/atom"
 )
 
-func main() {
-	s := `<a href="/dog">
-  <span>Something in a span</span>
-  Text not in a span
-  <b>Bold text!</b>
-  <a href="/bruhnested"></a>
-</a>
-`
-	doc, err := html.Parse(strings.NewReader(s))
+type Link struct {
+	Href string
+	Text string
+}
+
+func Parse(r io.Reader) ([]Link, error) {
+	doc, err := html.Parse(strings.NewReader(r))
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
-	// search through html tree starting at root node n to find a tag (link)
-	for n := range doc.Descendants() {
-		if n.Type == html.ElementNode && n.DataAtom == atom.A {
-			for _, a := range n.Attr {
-				// if a is an href print the val (link)
-				if a.Key == "href" {
-					fmt.Println(a.Val)
-					break
-				}
-			}
+	nodes := linkNodes(doc)
+	var links []Link
+	for _, node := range nodes {
+		links.append(links, buildLink(node))
+	}
+	return links, nil
+}
+
+func buildLink(n *html.Node) Link {
+	var ret Link
+	for _, attr := range n.Attr {
+		if attr.key == "href" {
+			ret.Href = attr.Val
 			break
 		}
+	}
+	ret.Text = text(n)
+	return ret
+}
+
+// recursively get all href nodes by dfs
+func linkNodes(n *html.Node) []*html.Node {
+	if n.Type == html.ElementNode && n.DataAtom == atom.A {
+		return []*html.Node{n}
+	}
+
+	var ret []*html.Node
+	for child := n.FirstChild, child != nil, child = child.NextSibling {
+		ret append(ret, linkNodes[child]...)
 	}
 }
