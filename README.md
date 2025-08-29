@@ -39,10 +39,10 @@ A collection of Go (Golang) mini-projects and exercises based on the [Gophercise
 
 - How to structure a Go project with packages and modules, dependency management
 - Parsing CSV and YAML files into Go Structs
+- JSON handling
 - basic use of channels
-- URL redirection/handling, using mux, net/http
+- basic webserver: URL redirection/handling, using mux, net/http
 - Logic for working with maps and slices
-- Go's `flag` package
 - error handling and debugging in Go
 - programming with html templating (I've already learned templating though through Helm Charts)
 
