@@ -1,19 +1,105 @@
 <!DOCTYPE html>
-    <html>
-        <head>
-            <meta charset="utf-8">
-            <title>Choose Your Own Adventure</title>
-        </head>
-        <body>
-            <!-- using html/template for dynamic html rendering -->
-            <h1>{{ .Title }}</h1>
-            {{range .Paragraphs}}
-            <p>{{.}}</p>
-            {{end}}
-            <ul>
-                {{range .Options}}
-                <li><a href="/{{ .Chapter }}">{{.Text}}</a></li>
-                {{end}}
-            </ul>
-        </body>
-    </html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Choose Your Own Adventure</title>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background: linear-gradient(120deg, #89f7fe, #66a6ff);
+            color: #222;
+            margin: 0;
+            padding: 20px;
+            position: relative;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.5rem;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        h1 img {
+            height: 60px;
+            margin-left: 15px;
+        }
+
+        p {
+            background: rgba(255,255,255,0.85);
+            padding: 12px 18px;
+            border-radius: 12px;
+            margin: 15px auto;
+            max-width: 700px;
+            line-height: 1.6;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 30px auto;
+            max-width: 600px;
+            text-align: center;
+        }
+
+        li {
+            margin: 12px 0;
+        }
+
+        a.option {
+            display: inline-block;
+            padding: 12px 20px;
+            background: #ffdd57;
+            border-radius: 10px;
+            font-weight: bold;
+            color: #222;
+            text-decoration: none;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            transition: all 0.25s ease;
+        }
+
+        a.option:hover {
+            background: #ffc107;
+            transform: scale(1.08);
+            box-shadow: 0 6px 14px rgba(0,0,0,0.3);
+        }
+
+        /* Special Skip to End button */
+        .skip-end {
+            background: #ff6b81;
+            color: #fff;
+            font-weight: bold;
+        }
+
+        .skip-end:hover {
+            background: #ff4757;
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body>
+    <!-- Title with Go Gopher -->
+    <h1>
+        {{ .Title }}
+        <img src="https://blog.golang.org/gopher/gopher.png" alt="Go Gopher">
+    </h1>
+
+    {{range .Paragraphs}}
+    <p>{{.}}</p>
+    {{end}}
+
+    <ul>
+        {{range .Options}}
+        <li><a href="/{{ .Chapter }}" class="option">{{.Text}}</a></li>
+        {{end}}
+        <!-- Skip to end button -->
+        <li><a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" class="option skip-end">Skip to the End</a></li>
+    </ul>
+</body>
+</html>
