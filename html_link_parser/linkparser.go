@@ -14,14 +14,14 @@ type Link struct {
 }
 
 func Parse(r io.Reader) ([]Link, error) {
-	doc, err := html.Parse(strings.NewReader(r))
+	doc, err := html.Parse(r)
 	if err != nil {
 		return nil, err
 	}
 	nodes := linkNodes(doc)
 	var links []Link
 	for _, node := range nodes {
-		links.append(links, buildLink(node))
+		links = append(links, buildLink(node))
 	}
 	return links, nil
 }
@@ -29,13 +29,27 @@ func Parse(r io.Reader) ([]Link, error) {
 func buildLink(n *html.Node) Link {
 	var ret Link
 	for _, attr := range n.Attr {
-		if attr.key == "href" {
+		if attr.Key == "href" {
 			ret.Href = attr.Val
 			break
 		}
 	}
 	ret.Text = text(n)
 	return ret
+}
+
+func text(n *html.Node) string {
+	if n.Type == html.TextNode {
+		return n.Data
+	}
+	if n.Type != html.ElementNode {
+		return ""
+	}
+	var ret string
+	for c := n.FirstChild; c != nil; c = c.NextSibling {
+		ret += text(c)
+	}
+	return strings.Join(strings.Fields(ret), " ")
 }
 
 // recursively get all href nodes by dfs
@@ -45,7 +59,8 @@ func linkNodes(n *html.Node) []*html.Node {
 	}
 
 	var ret []*html.Node
-	for child := n.FirstChild, child != nil, child = child.NextSibling {
-		ret append(ret, linkNodes[child]...)
+	for child := n.FirstChild; child != nil; child = child.NextSibling {
+		ret = append(ret, linkNodes(child)...)
 	}
+	return ret
 }
