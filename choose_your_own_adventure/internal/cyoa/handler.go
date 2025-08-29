@@ -10,10 +10,23 @@ type handler struct {
 	s Story
 }
 
-// handle http w tpl which 'Must' template
 func (h handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	err := tpl.Execute(w, h.s["intro"])
+	path := r.URL.Path
+
+	if path == "" || path == "/" {
+		path = "/intro"
+	}
+
+	chapterKey := path[1:]
+
+	chapter, ok := h.s[chapterKey]
+	if !ok {
+		http.Error(w, "Chapter not found", http.StatusNotFound)
+		return
+	}
+
+	err := tpl.Execute(w, chapter)
 	if err != nil {
-		panic(err)
+		http.Error(w, "Something went wrong", http.StatusInternalServerError)
 	}
 }

@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"os"
 
-	cyoa "github.com/Joe-Bresee/gophercises/choose_your_own_adventure/internal/cyoa"
+	"github.com/Joe-Bresee/gophercises/choose_your_own_adventure/internal/cyoa"
 )
 
 func main() {
