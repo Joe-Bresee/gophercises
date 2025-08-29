@@ -14,6 +14,7 @@ func main() {
   <span>Something in a span</span>
   Text not in a span
   <b>Bold text!</b>
+  <a href="/bruhnested"></a>
 </a>
 `
 	doc, err := html.Parse(strings.NewReader(s))
@@ -30,6 +31,7 @@ func main() {
 					break
 				}
 			}
+			break
 		}
 	}
 }
