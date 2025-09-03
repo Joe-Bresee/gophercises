@@ -23,6 +23,7 @@ var doCmd = &cobra.Command{
 			} else {
 				ids = append(ids, id)
 			}
+
 		}
 		fmt.Println(ids)
 	},
