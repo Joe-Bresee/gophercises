@@ -37,15 +37,17 @@ A collection of Go (Golang) mini-projects and exercises based on the [Gophercise
 
 ## 🧠 What I’ve Learned So Far
 
-- How to structure a Go project with packages and modules, dependency management
+- How to structure a Go project and how Go packages and modules, and dependency management functions
 - Parsing CSV and YAML files into Go Structs
 - JSON handling
-- basic use of channels
-- basic webserver: URL redirection/handling, using mux, net/http
+- Channels
+- Webserver: URL redirection/handling, using mux, net/http
 - Logic for working with maps and slices
 - error handling and debugging in Go
 - programming with html templating (I've already learned templating though through Helm Charts)
 - recursive html tree traversal
+- DB operations using boltDB
+- OS operations
 
 (*This section will grow as I complete more exercises.*)
 
