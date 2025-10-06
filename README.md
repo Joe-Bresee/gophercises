@@ -11,7 +11,10 @@ A collection of Go (Golang) mini-projects and exercises based on the [Gophercise
 | 01       | Quiz Game         | A timed CLI quiz that reads questions from a CSV file.        |
 | 02       | URL Shortener     | A web server that redirects paths to URLs using YAML/JSON.    |
 | 03       | Choose Your Own Adventure game          | Run a game defined in a json file                       |
-
+| 04       | html link parser         | A package that parses html links to return hrefs.        |
+| 05       | sitemap         | An application that takes a website as input and creates a sitemap of it using the html link parser package.        |
+| 06       | CLI Task Manager         | A CLI task manager using boltDB.        |
+| 07       | phone number normalizer         | In progress        |
 ---
 
 ## 🛠 Technologies
@@ -22,6 +25,10 @@ A collection of Go (Golang) mini-projects and exercises based on the [Gophercise
 - Web development (`net/http`, `mux`)
 - File I/O and CLI interfaces
 - Go modules
+- boltDB
+- SQL
+- html
+- css
 
 ---
 
@@ -32,6 +39,7 @@ A collection of Go (Golang) mini-projects and exercises based on the [Gophercise
 - Build both command-line tools and web servers using Go's standard library.
 - Become competent enough to effectively contribute to open source Go projects
 - Write readable, maintainable, idiomatic Go code.
+- Get more fluent with database operations
 
 ---
 
@@ -46,8 +54,10 @@ A collection of Go (Golang) mini-projects and exercises based on the [Gophercise
 - error handling and debugging in Go
 - programming with html templating (I've already learned templating though through Helm Charts)
 - recursive html tree traversal
-- DB operations using boltDB
+- DB operations using boltDB & SQL
 - OS operations
+- (Separate) Terraform provider SDK semantics and provider structure (While working on terraform-provider-talos)
+- Go testing
 
 (*This section will grow as I complete more exercises.*)
 
