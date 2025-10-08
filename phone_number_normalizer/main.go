@@ -23,9 +23,8 @@ type phone struct {
 
 func main() {
 	var ids []int
-	var numbers []string
 
-	phones := []string{
+	init_phones := []string{
 		"1234567890",
 		"123 456 7891",
 		"(123) 456 7892",
@@ -59,20 +58,15 @@ func main() {
 	err = createPhoneTable(db)
 	must(err)
 
-	for _, p := range phones {
+	for _, p := range init_phones {
 		id, err := insertPhone(db, normalize(p))
 		must(err)
 		ids = append(ids, id)
 	}
-	for i := range phones {
-		number, err := getPhone(db, ids[i])
-		must(err)
-		numbers = append(numbers, number)
-	}
 
-	for i := range phones {
-		fmt.Printf("ID: %d, Phone: %s\n", ids[i], numbers[i])
-	}
+	var phones []phone
+	phones, err = getAllPhones(db)
+	fmt.Println(phones)
 }
 
 func getPhone(db *sql.DB, id int) (string, error) {
@@ -82,6 +76,27 @@ func getPhone(db *sql.DB, id int) (string, error) {
 		return "", err
 	}
 	return number, nil
+}
+
+func getAllPhones(db *sql.DB) ([]phone, error) {
+	rows, err := db.Query("SELECT id, value FROM phone_numbers")
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var ret []phone
+	for rows.Next() {
+		var p phone
+		if err := rows.Scan(&p.id, &p.number); err != nil {
+			return nil, err
+		}
+		ret = append(ret, p)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return ret, nil
 }
 
 func insertPhone(db *sql.DB, phone string) (int, error) {
