@@ -59,14 +59,30 @@ func main() {
 	must(err)
 
 	for _, p := range init_phones {
-		id, err := insertPhone(db, normalize(p))
+		id, err := insertPhone(db, p)
 		must(err)
 		ids = append(ids, id)
 	}
 
 	var phones []phone
 	phones, err = getAllPhones(db)
-	fmt.Println(phones)
+	must(err)
+	for _, p := range phones {
+		fmt.Printf("Working on %+v\n", p)
+		number := normalize(p.number)
+		if number != p.number {
+			fmt.Println("Updating/Removing", number)
+			existing, err := findPhone(db, number)
+			must(err)
+			if existing != nil {
+				//delete
+			} else {
+				//update number
+			}
+		} else {
+			fmt.Println("No changes required")
+		}
+	}
 }
 
 func getPhone(db *sql.DB, id int) (string, error) {
@@ -76,6 +92,18 @@ func getPhone(db *sql.DB, id int) (string, error) {
 		return "", err
 	}
 	return number, nil
+}
+
+func findPhone(db *sql.DB, number string) (*phone, error) {
+	var p phone
+	row := db.QueryRow("SELECT value FROM phone_numbers WHERE value=$1", number)
+	err := row.Scan(&p.id, &p.number)
+	if err == sql.ErrNoRows {
+		return nil, nil
+	} else {
+		return nil, err
+	}
+	return &p, nil
 }
 
 func getAllPhones(db *sql.DB) ([]phone, error) {
