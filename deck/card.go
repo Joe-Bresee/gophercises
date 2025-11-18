@@ -2,7 +2,10 @@
 
 package deck
 
-import "fmt"
+import (
+	"fmt"
+	"sort"
+)
 
 type Suit uint8
 
@@ -64,4 +67,27 @@ func NewDeck(opts ...func([]Card) []Card) []Card {
 	return cards
 }
 
-// func absRank(c Card) int {}
+func DefaultSort(cards []Card) []Card {
+	sorted := make([]Card, len(cards))
+	copy(sorted, cards)
+	sort.Slice(sorted, Less(cards))
+	return sorted
+}
+
+func Sort(less func(cards []Card) func(i, j int) bool) func([]Card) []Card {
+	return func(cards []Card) []Card {
+		sort.Slice(cards, less(cards))
+		return cards
+	}
+}
+
+func absRank(c Card) int {
+
+	return int(c.Suit)*len(ranks) + int(c.Rank)
+}
+
+func Less(cards []Card) func(i, j int) bool {
+	return func(i, j int) bool {
+		return absRank(cards[i]) < absRank(cards[j])
+	}
+}
