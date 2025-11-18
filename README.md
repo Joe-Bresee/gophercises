@@ -14,7 +14,8 @@ A collection of Go (Golang) mini-projects and exercises based on the [Gophercise
 | 04       | html link parser         | A package that parses html links to return hrefs.        |
 | 05       | sitemap         | An application that takes a website as input and creates a sitemap of it using the html link parser package.        |
 | 06       | CLI Task Manager         | A CLI task manager using boltDB.        |
-| 07       | phone number normalizer         | In progress        |
+| 07       | phone number normalizer         | Testing, normalizing, and processing phone numbers with a postgres database        |
+| 07       | Deck of Cards         | Creating a package that allows you to write card games using Go. Includes cards (suits and ranks), shuffling, etc.        |
 ---
 
 ## 🛠 Technologies
@@ -26,6 +27,7 @@ A collection of Go (Golang) mini-projects and exercises based on the [Gophercise
 - File I/O and CLI interfaces
 - Go modules
 - boltDB
+- Postgres DB
 - SQL
 - html
 - css
@@ -54,7 +56,7 @@ A collection of Go (Golang) mini-projects and exercises based on the [Gophercise
 - error handling and debugging in Go
 - programming with html templating (I've already learned templating though through Helm Charts)
 - recursive html tree traversal
-- DB operations using boltDB & SQL
+- DB operations using boltDB & PostgreSQL
 - OS operations
 - (Separate) Terraform provider SDK semantics and provider structure (While working on terraform-provider-talos)
 - Go testing
