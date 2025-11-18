@@ -52,6 +52,16 @@ func (c Card) String() string {
 	return fmt.Sprintf("%s of %ss", c.Rank.String(), c.Suit.String())
 }
 
+func Deck(n int) func([]Card) []Card {
+	return func(cards []Card) []Card {
+		var ret []Card
+		for i := 0; i < n; i++ {
+			ret = append(ret, cards...)
+		}
+		return ret
+	}
+}
+
 func NewDeck(opts ...func([]Card) []Card) []Card {
 	cards := make([]Card, 0, 52)
 
@@ -78,6 +88,18 @@ func Sort(less func(cards []Card) func(i, j int) bool) func([]Card) []Card {
 	return func(cards []Card) []Card {
 		sort.Slice(cards, less(cards))
 		return cards
+	}
+}
+
+func Filter(f func(card Card) bool) func([]Card) []Card {
+	return func(cards []Card) []Card {
+		var ret []Card
+		for _, c := range cards {
+			if !f(c) {
+				ret = append(ret, c)
+			}
+		}
+		return ret
 	}
 }
 

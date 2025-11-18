@@ -28,3 +28,15 @@ func TestSort(t *testing.T) {
 		t.Error("expeced ace of spades as first card recieved:", cards[0])
 	}
 }
+
+func TestFilter(t *testing.T) {
+	filter := func(card Card) bool {
+		return card.Rank == Two || card.Rank == Three
+	}
+	cards := NewDeck(Filter(filter))
+	for _, c := range cards {
+		if c.Rank == Two || c.Rank == Three {
+			t.Error("Expected all twos and threes to be filtered out")
+		}
+	}
+}
